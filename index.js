@@ -1,6 +1,5 @@
-// index.js
 const { program } = require('commander');
-const { addContacts, removeContact, getContactById, listContact } = require('./src/db/contacts.js');
+const { addContacts, removeContact, getContactById, listContacts } = require('./src/db/contacts.js');
 
 program
   .option('-a, --action <type>', 'choose action')
@@ -14,7 +13,7 @@ program.parse(process.argv);
 async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case 'list':
-      const contactList = await listContact();
+      const contactList = await listContacts();
       console.log('Contacts list:', contactList);
       break;
 
