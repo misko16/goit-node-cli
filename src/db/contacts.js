@@ -1,15 +1,15 @@
 // ./src/db/contacts.js
 
-const fs = require('fs/promises');
-const path = require('path');
+const fs = require("fs/promises");
+const path = require("path");
 
-const contactsPath = path.join(__dirname, 'contacts.json');
+const contactsPath = path.join(__dirname, "contacts.json");
 let cachedContacts = null;
 
 async function listContacts() {
   try {
     if (!cachedContacts) {
-      const data = await fs.readFile(contactsPath, 'utf-8');
+      const data = await fs.readFile(contactsPath, "utf-8");
       cachedContacts = JSON.parse(data);
     }
     return cachedContacts;
@@ -21,7 +21,7 @@ async function listContacts() {
 async function getContactById(contactId) {
   try {
     const contacts = await listContacts();
-    return contacts.find(contact => contact.id === contactId);
+    return contacts.find((contact) => contact.id === contactId);
   } catch (error) {
     throw new Error(error.message);
   }
@@ -30,15 +30,19 @@ async function getContactById(contactId) {
 async function removeContact(contactId) {
   try {
     const contacts = await listContacts();
-    const contactsToRemove = contacts.find(contact => contact.id === contactId)
-    if (!contactsToRemove){
+    const contactsToRemove = contacts.find(
+      (contact) => contact.id === contactId
+    );
+    if (!contactsToRemove) {
       return null;
     }
 
-    const updatedContacts = contacts.filter(contact => contact.id !== contactId);
+    const updatedContacts = contacts.filter(
+      (contact) => contact.id !== contactId
+    );
     await fs.writeFile(contactsPath, JSON.stringify(updatedContacts, null, 2));
-    cachedContacts = updatedContacts; 
-    return { success: true, message: 'Contact removed successfully' };
+    cachedContacts = updatedContacts;
+    return { success: true, message: "Contact removed successfully" };
   } catch (error) {
     throw new Error(`Error removing contact: ${error.message}`);
   }
@@ -49,8 +53,9 @@ async function addContact(name, email, phone) {
     const newContact = { id: new Date().toISOString(), name, email, phone };
     const contacts = await listContacts();
     const updatedContacts = [...contacts, newContact];
+
     await fs.writeFile(contactsPath, JSON.stringify(updatedContacts, null, 2));
-    cachedContacts = updatedContacts; 
+    cachedContacts = updatedContacts;
     return newContact;
   } catch (error) {
     throw new Error(error.message);
@@ -61,5 +66,5 @@ module.exports = {
   listContacts,
   getContactById,
   removeContact,
-  addContact
+  addContact,
 };
