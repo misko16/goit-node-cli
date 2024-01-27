@@ -30,12 +30,17 @@ async function getContactById(contactId) {
 async function removeContact(contactId) {
   try {
     const contacts = await listContacts();
+    const contactsToRemove = contacts.find(contact => contact.id === contactId)
+    if (!contactsToRemove){
+      return null;
+    }
+
     const updatedContacts = contacts.filter(contact => contact.id !== contactId);
     await fs.writeFile(contactsPath, JSON.stringify(updatedContacts, null, 2));
     cachedContacts = updatedContacts; 
-    return updatedContacts;
+    return { success: true, message: 'Contact removed successfully' };
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(`Error removing contact: ${error.message}`);
   }
 }
 

@@ -14,12 +14,12 @@ async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case 'list':
       const contactList = await listContacts();
-      console.log('Contacts list:', contactList);
+      console.table(contactList);
       break;
 
     case 'get':
       const findContact = await getContactById(id);
-      console.log(findContact || 'Contact not can not be found');
+      console.log(findContact || null);
       break;
 
     case 'add':
@@ -29,7 +29,7 @@ async function invokeAction({ action, id, name, email, phone }) {
 
     case 'remove':
       const deleteContact = await removeContact(id);
-      console.log('Contact was deleted:', deleteContact);
+      console.log(deleteContact || null);
       break;
 
     default:
