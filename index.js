@@ -1,6 +1,6 @@
 const { program } = require("commander");
 const {
-  addContacts,
+  addContact,
   removeContact,
   getContactById,
   listContacts,
@@ -28,13 +28,14 @@ async function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case "add":
-      const addContact = await addContacts(name, email, phone);
-      console.log("Information about contact:", addContact);
+      const addContacts = await addContact(name, email, phone);
+      console.log("Contact added sucsesfull:", addContacts);
       break;
 
     case "remove":
       const deleteContact = await removeContact(id);
-      console.log(deleteContact || null);
+      const deletedContact = await getContactById(id);
+      console.log(deletedContact || deleteContact); 
       break;
 
     default:
